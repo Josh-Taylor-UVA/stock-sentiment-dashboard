@@ -23,11 +23,15 @@ import os
 
 #%% Creating the consumer sentiment df
 
-# Load the .env file
-load_dotenv()
 
-# Read the key from the .env file
-api_key = os.getenv('FRED_API_KEY')
+# Load API credentials
+load_dotenv()
+api_key = os.getenv('FRED_API_KEY') # Read the key from the .env file
+
+# Fail clearly if the key is missing, rather than producing a cryptic error later
+if not api_key:
+    raise ValueError("FRED_API_KEY not found. Check your .env file locally or your GitHub Secret in the cloud.")
+
 
 # Connect to FRED via an API
 fred = Fred(api_key = api_key)

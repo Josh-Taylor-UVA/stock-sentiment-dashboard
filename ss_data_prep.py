@@ -19,6 +19,10 @@ import os
 load_dotenv()
 api_key = os.getenv('FRED_API_KEY')
 
+# Fail clearly if the key is missing so we don't produce an unknown error later
+if not api_key:
+    raise ValueError("FRED_API_KEY not found. Check your .env file locally or your GitHub Secret in the cloud.")
+
 # ── Pull consumer sentiment data from FRED ─────────────────────────────────────
 fred = Fred(api_key=api_key)
 sentiment = fred.get_series('UMCSENT')
