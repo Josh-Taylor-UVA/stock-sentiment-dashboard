@@ -73,6 +73,9 @@ df_merged['sentiment_pct_change'] = df_merged['sentiment'].pct_change() * 100
 df_merged['rolling_corr_12m'] = df_merged['sentiment'].rolling(window=12, min_periods=6).corr(df_merged['sp500_close'])
 
 # ── Save to CSV ────────────────────────────────────────────────────────────────
+# Round to 4 decimals so tiny floating-point differences between runs
+# don't register as changes and trigger redundant commits
+df_merged = df_merged.round(4)
 df_merged.to_csv('df_sent_stock.csv')
 
 print(df_merged.shape)
