@@ -187,6 +187,17 @@ print(df_merged.tail(5))
 
 #%% Saving the merged dataframe to a CSV in your project folder so I don't have to re-pull
 # from both APIs each time I run the dashboard
+# Round to 4 decimals so tiny floating-point differences between runs
+# don't register as changes and trigger redundant commits. I have a line in my workflow file
+# that is supposed to ignore new commits if nothing changes from a data the automated data pull. 
+# Meaning, if there is no new data yet and my automated data pull still runs, Github won't note that 
+# I ran a commit. I did this because I only want commits to show when new data is added.
+# If no new data is added then it muddies which commits are worthwhile to look at / to include
+# Not rounding the dervied columns might produce ever so slightly different values
+# each time they are calculated so we round them now to keep them stable and not to get
+# Github to think that something changed if it's only the dervied columns' trailing decimal
+# numbers
+df_merged = df_merged.round(4)
 df_merged.to_csv('df_sent_stock.csv')
 print(os.getcwd())
 
